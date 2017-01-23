@@ -1,0 +1,11 @@
+/src/main/java/test/*
+/.gradle
+/build/*
+build/*
+.idea/
+*.iml
+*.swp
+
+
+log
+.DS_Store

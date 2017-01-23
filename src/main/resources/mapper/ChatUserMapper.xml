@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.haoche.chat.dao.ChatUserMapper">
+    <select id="selectChatUser" resultType="ChatUser" parameterType="ChatUser">
+        select * from chat_user where 1=1
+		<if test="phone != null">
+			and phone=#{phone} and password=#{password}
+		</if>
+		<if test="chatUsername != null">
+			and chatUsername=#{chatUsername}
+		</if>
+    </select>
+
+    <insert id="insertChatUser" parameterType="ChatUser"  useGeneratedKeys="true" keyProperty="id">
+        INSERT chat_user(chatUsername, chatPassword, nickName, password, userIcon, phone)
+        VALUES (#{chatUsername}, #{chatPassword}, #{nickName},#{password}, #{userIcon}, #{phone})
+    </insert>
+</mapper>

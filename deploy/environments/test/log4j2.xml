@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration status="OFF">
+    <Properties>
+        <Property name="directory">/usr/local/var/log/haoche_app_service</Property>
+        <Property name="filename">debug.log</Property>
+    </Properties>
+
+    <appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout charset="UTF-8" pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+        </Console>
+
+        <RollingFile name="RollingErrorFile" fileName="${directory}/error.log"
+                     filePattern="${directory}/$${date:yyyy-MM-dd}/error/%d{MM-dd-yyyy}-%i.log.gz">
+            <PatternLayout charset="UTF-8"
+                           pattern="%d{yyyy-MM-dd 'at' HH:mm:ss z} [%t] %-5level %logger{36} - %msg%xEx%n"/>
+            <ThresholdFilter level="error" onMatch="ACCEPT" onMismatch="DENY"/>
+            <SizeBasedTriggeringPolicy size="10MB"/>
+        </RollingFile>
+
+        <RollingFile name="RollingDebugFile" fileName="${directory}/debug.log"
+                     filePattern="${directory}/$${date:yyyy-MM-dd}/debug/%d{MM-dd-yyyy}-%i.log.gz">
+            <PatternLayout charset="UTF-8"
+                           pattern="%d{yyyy-MM-dd 'at' HH:mm:ss z} [%t] %-5level %logger{36} - %msg%xEx%n"/>
+            <SizeBasedTriggeringPolicy size="10MB"/>
+        </RollingFile>
+
+    </appenders>
+    <loggers>
+        <logger name="com.github.isrsal.logging.LoggingFilter" level="DEBUG" additivity="false">
+            <appender-ref ref="RollingDebugFile"/>
+        </logger>
+
+        <logger name="com.haoche.app" level="DEBUG" additivity="false">
+            <appender-ref ref="RollingErrorFile"/>
+            <appender-ref ref="RollingDebugFile"/>
+        </logger>
+
+        <root level="INFO">
+            <appender-ref ref="Console"/>
+        </root>
+    </loggers>
+</configuration>

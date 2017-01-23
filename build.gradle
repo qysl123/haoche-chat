@@ -1,0 +1,111 @@
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'spring-boot'
+
+buildscript {
+    repositories {
+        maven {
+            url "http://218.89.221.13:6380/nexus/content/repositories/snapshots"
+        }
+        maven {
+            url "http://218.89.221.13:6380/nexus/content/repositories/releases"
+        }
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:$springBootVersion")
+    }
+
+}
+
+version = '1.0.0-SNAPSHOT'
+
+jar {
+    baseName = 'haoche-chat-service'
+    version = '1.0.0-SNAPSHOT'
+}
+
+idea {
+    module {
+        inheritOutputDirs = false
+        outputDir = file("$buildDir/classes/main/")
+    }
+}
+
+
+repositories {
+    maven {
+        url "http://218.89.221.13:6380/nexus/content/repositories/snapshots"
+//        url "http://192.168.10.63:8081/nexus/content/repositories/snapshots"
+    }
+    maven {
+//        url "http://192.168.10.63:8081/nexus/content/repositories/releases"
+        url "http://218.89.221.13:6380/nexus/content/repositories/releases"
+    }
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+    compile("org.springframework.boot:spring-boot-starter-web:1.4.3.RELEASE")
+    compile("org.springframework.boot:spring-boot-starter:1.4.3.RELEASE")
+
+    // spring框架
+    compile(
+            "org.springframework:spring-core:${springVersion}",
+            "org.springframework:spring-aop:${springVersion}",
+            "org.springframework:spring-context:${springVersion}",
+            "org.springframework:spring-context-support:${springVersion}",
+            "org.springframework:spring-beans:${springVersion}",
+            "org.springframework:spring-expression:${springVersion}",
+            "org.springframework:spring-orm:${springVersion}",
+            'org.springframework.retry:spring-retry:1.1.2.RELEASE',
+            "org.springframework.data:spring-data-redis:1.4.2.RELEASE",
+            "redis.clients:jedis:2.5.2",
+    )
+
+    // 日志
+    compile(
+            "org.apache.logging.log4j:log4j-core:$log4jVersion",
+            "org.apache.logging.log4j:log4j-api:$log4jVersion",
+            "org.apache.logging.log4j:log4j-slf4j-impl:$log4jVersion")
+    compile group: 'commons-logging', name: 'commons-logging', version: '1.1.1'
+
+    // 持久化
+    compile(
+            'org.mybatis:mybatis:3.3.1',
+            'org.mybatis:mybatis-spring:1.2.5',
+            'c3p0:c3p0:0.9.1.2',
+            'mysql:mysql-connector-java:5.1.38')
+
+    compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.2'
+
+    // AOP 相关
+    compile(
+            "org.aspectj:aspectjrt:$aspectjVersion",
+            "org.aspectj:aspectjtools:$aspectjVersion")
+
+    // 工具类
+    compile('com.google.guava:guava:18.0',
+            'org.apache.commons:commons-lang3:3.4',
+            'org.aspectj:aspectjrt:1.8.6',
+            'org.aspectj:aspectjtools:1.8.6',
+            'com.github.oxo42:stateless4j:2.5.0',
+            'com.alibaba:fastjson:1.2.14')
+
+}
+
+// 配置spring日志打印
+configurations {
+    compile.exclude module: 'spring-boot-starter-logging'
+    compile.exclude module: 'slf4j-log4j12'
+}
+
+// 不添加这个找不到application.properties
+springBoot {
+    layout = 'ZIP'
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.3'
+}
