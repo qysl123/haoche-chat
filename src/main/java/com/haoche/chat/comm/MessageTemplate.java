@@ -29,9 +29,4 @@ public class MessageTemplate {
 		
 		return msg;
 	}
-	
-	public static void main(String[] args) {
-		System.out.println(MessageTemplate.print(BLANK_OBJ_MSG, new String[]{"UserName"}));
-		System.out.println(MessageTemplate.print(UNKNOWN_TYPE_MSG, new String[]{"type1", "types"}));
-	}
 }
