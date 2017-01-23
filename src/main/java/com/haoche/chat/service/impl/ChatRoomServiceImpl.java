@@ -23,7 +23,7 @@ public class ChatRoomServiceImpl implements ChatRoomService {
         EasemobChatRoom easemobChatRoom = (EasemobChatRoom) ClientContext.getInstance().getAPIFactory().newInstance(EasemobRestAPIFactory.CHATROOM_CLASS);
         BodyWrapper bodyWrapper = new ChatRoomBody("测试聊天室");
         ResponseWrapper responseWrapper = (ResponseWrapper) easemobChatRoom.createChatRoom(bodyWrapper);
-        return ((JSONObject) responseWrapper.getResponseBody()).getJSONArray("data").getObject(0, ChatRoom.class);
+        return ((JSONObject) responseWrapper.getResponseBody()).getObject("data", ChatRoom.class);
     }
 
     @Override
