@@ -14,7 +14,7 @@ public class MyX509TrustManager implements X509TrustManager {
     X509TrustManager myTrustManager;
     public MyX509TrustManager(String cacertFile, String password) throws Exception {
         KeyStore keyStore = KeyStore.getInstance("JKS");
-        keyStore.load(new FileInputStream(cacertFile), password.toCharArray());
+        keyStore.load(MyX509TrustManager.class.getClass().getResourceAsStream("/cacert/mykeystore.jks"), password.toCharArray());
 
         TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
         trustManagerFactory.init(keyStore);
