@@ -1,11 +1,13 @@
 package com.haoche.chat.comm.body;
 
+import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ContainerNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.haoche.chat.comm.wrapper.BodyWrapper;
+import org.apache.commons.lang3.ArrayUtils;
 
-import java.util.List;
+import java.util.*;
 
 public class IMUsersBody implements BodyWrapper {
 	
@@ -16,14 +18,8 @@ public class IMUsersBody implements BodyWrapper {
 		this.users = users;
 	}
 	
-	public ContainerNode<?> getBody() {
-		ArrayNode root = JsonNodeFactory.instance.arrayNode();
-		
-		for( IMUserBody user : users ) {
-			root.add(user.getBody());
-		}
-		
-		return root;
+	public String getBody() {
+		return JSONObject.toJSONString(users);
 	}
 
 	public Boolean validate() {

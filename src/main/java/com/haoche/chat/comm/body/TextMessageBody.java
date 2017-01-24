@@ -1,10 +1,12 @@
 package com.haoche.chat.comm.body;
 
+import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.node.ContainerNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.haoche.chat.comm.constant.MsgType;
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class TextMessageBody extends MessageBody {
@@ -19,15 +21,15 @@ public class TextMessageBody extends MessageBody {
 		return msg;
 	}
 
-    public ContainerNode<?> getBody() {
-        if(!isInit()){
-			ObjectNode msg = this.getMsgBody().putObject("msg");
-			msg.put("type", MsgType.TEXT);
-			msg.put("msg", this.msg);
-            this.setInit(true);
-        }
-
-        return this.getMsgBody();
+    public String getBody() {
+		if (!this.isInit()) {
+			Map<String, String> map = new HashMap<>();
+			map.put("type", MsgType.CMD);
+			map.put("msg", this.msg);
+			this.setInit(true);
+			this.getMsgBody().put("msg", map);
+		}
+		return JSONObject.toJSONString(this.getMsgBody());
     }
 
     public Boolean validate() {

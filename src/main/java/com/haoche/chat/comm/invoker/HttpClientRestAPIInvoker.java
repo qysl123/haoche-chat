@@ -110,7 +110,7 @@ public class HttpClientRestAPIInvoker implements RestAPIInvoker {
         }
 
         if (null != body && null != body.getBody()) {
-            ((HttpEntityEnclosingRequestBase) request).setEntity(new StringEntity(body.getBody().toString(), "UTF-8"));
+            ((HttpEntityEnclosingRequestBase) request).setEntity(new StringEntity(body.getBody(), "UTF-8"));
         }
         buildHeader(request, header);
 

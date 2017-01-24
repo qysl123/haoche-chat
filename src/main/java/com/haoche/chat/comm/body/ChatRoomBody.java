@@ -1,12 +1,11 @@
 package com.haoche.chat.comm.body;
 
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.ContainerNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.alibaba.fastjson.JSONObject;
 import com.haoche.chat.comm.wrapper.BodyWrapper;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
+
+import java.util.*;
 
 public class ChatRoomBody implements BodyWrapper {
     private String name;
@@ -49,20 +48,18 @@ public class ChatRoomBody implements BodyWrapper {
         return members;
     }
 
-    public ContainerNode<?> getBody() {
-        ObjectNode body = JsonNodeFactory.instance.objectNode();
-        body.put("name", name).put("description", desc).put("owner", owner);
-        if(null != maxUsers) {
-            body.put("maxusers", maxUsers);
+    public String getBody() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("name", name);
+        map.put("description", desc);
+        map.put("owner", owner);
+        if (null != maxUsers) {
+            map.put("maxusers", maxUsers);
         }
-        if(ArrayUtils.isNotEmpty(members)) {
-            ArrayNode membersNode = body.putArray("members");
-            for (String member : members) {
-                membersNode.add(member);
-            }
+        if (ArrayUtils.isNotEmpty(members)) {
+            map.put("members", members);
         }
-
-        return body;
+        return JSONObject.toJSONString(map);
     }
 
     public Boolean validate() {

@@ -1,9 +1,13 @@
 package com.haoche.chat.comm.body;
 
+import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.node.ContainerNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.haoche.chat.comm.wrapper.BodyWrapper;
 import org.apache.commons.lang3.StringUtils;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class IMUserBody implements BodyWrapper {
 	
@@ -45,8 +49,12 @@ public class IMUserBody implements BodyWrapper {
 	}
 
 	@Override
-	public ContainerNode<?> getBody() {
-		return JsonNodeFactory.instance.objectNode().put("username", userName).put("password", password).put("nickname", nickName);
+	public String getBody() {
+		Map<String, String> map = new HashMap<>();
+		map.put("username", userName);
+		map.put("password", password);
+		map.put("nickname", nickName);
+		return JSONObject.toJSONString(map);
 	}
 
 	@Override

@@ -1,10 +1,14 @@
 package com.haoche.chat.comm.body;
 
 
+import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.node.ContainerNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.haoche.chat.comm.wrapper.BodyWrapper;
 import org.apache.commons.lang3.StringUtils;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class ResetPasswordBody implements BodyWrapper {
     private String newPassword;
@@ -21,8 +25,10 @@ public class ResetPasswordBody implements BodyWrapper {
         this.newPassword = newPassword;
     }
 
-    public ContainerNode<?> getBody() {
-        return JsonNodeFactory.instance.objectNode().put("newpassword", newPassword);
+    public String getBody() {
+        Map<String, String> map = new HashMap<>();
+        map.put("newpassword", newPassword);
+        return JSONObject.toJSONString(map);
     }
 
     public Boolean validate() {

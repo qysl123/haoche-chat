@@ -1,5 +1,6 @@
 package com.haoche.chat.comm.body;
 
+import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ContainerNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
@@ -21,16 +22,8 @@ public class UserNamesBody implements BodyWrapper {
         this.users = users;
     }
 
-    public ContainerNode<?> getBody() {
-        ObjectNode body = JsonNodeFactory.instance.objectNode();
-        ArrayNode names = JsonNodeFactory.instance.arrayNode();
-        body.put("usernames", names);
-
-        for (String user: users) {
-            names.add(user);
-        }
-
-        return body;
+    public String getBody() {
+        return JSONObject.toJSONString(users);
     }
 
     public Boolean validate() {

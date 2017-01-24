@@ -1,17 +1,13 @@
 package com.haoche.chat.comm.body;
 
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.haoche.chat.comm.wrapper.BodyWrapper;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 public abstract class MessageBody implements BodyWrapper {
-	private ObjectNode msgBody;
+    private Map<String, Object> msgBody;
 
     private String targetType;
 
@@ -55,27 +51,19 @@ public abstract class MessageBody implements BodyWrapper {
         this.init = init;
     }
 
-    protected ObjectNode getMsgBody() {
-        if(null == this.msgBody) {
-            this.msgBody = JsonNodeFactory.instance.objectNode();
+    protected Map<String, Object> getMsgBody() {
+        if (msgBody == null) {
+            this.msgBody = new HashMap<>();
             msgBody.put("target_type", targetType);
-            ArrayNode targetsNode = msgBody.putArray("target");
-            for (String target: targets ) {
-                targetsNode.add(target);
-            }
+            msgBody.put("target", targets);
             msgBody.put("from", from);
 
-            if(null != ext) {
-                ObjectNode extNode = msgBody.putObject("ext");
-                Iterator<String> iter = ext.keySet().iterator();
-                while(iter.hasNext()){
-                    String key = iter.next();
-                    extNode.put(key, ext.get(key));
-                }
+            if (null != ext) {
+                msgBody.put("ext", ext);
             }
         }
-		return msgBody;
-	}
+        return msgBody;
+    }
 
     public Boolean validate() {
         return StringUtils.isNotBlank(targetType) && isValidTargetType() && ArrayUtils.isNotEmpty(targets);

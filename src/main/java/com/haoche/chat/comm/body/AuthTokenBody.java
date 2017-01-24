@@ -1,9 +1,14 @@
 package com.haoche.chat.comm.body;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.node.ContainerNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.haoche.chat.comm.wrapper.BodyWrapper;
 import org.apache.commons.lang3.StringUtils;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class AuthTokenBody implements BodyWrapper {
 	
@@ -43,8 +48,12 @@ public class AuthTokenBody implements BodyWrapper {
 		this.clientSecret = clientSecret;
 	}
 
-	public ContainerNode<?> getBody() {
-		return JsonNodeFactory.instance.objectNode().put("grant_type", grantType).put("client_id", clientId).put("client_secret", clientSecret);
+	public String getBody() {
+		Map<String, String> map = new HashMap<>();
+		map.put("grant_type", grantType);
+		map.put("client_id", clientId);
+		map.put("client_secret", clientSecret);
+		return JSONObject.toJSONString(map);
 	}
 
 	public Boolean validate() {
